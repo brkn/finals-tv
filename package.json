@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsc-watch --onSuccess \"node ./dist/server.js\" --onFailure \"echo Compilation Failed\" --compiler typescript/bin/tsc",
+    "build": "tsc -p tsconfig.json",
     "test": "jest --coverage --verbose",
-    "typecheck": "echo \"type-checking...\" && tsc --noEmit"
+    "typecheck": "echo \"type-checking...\" && tsc --noEmit",
+    "typeorm": "ts-node ./node_modules/.bin/typeorm"
   },
   "author": "",
   "license": "ISC",
