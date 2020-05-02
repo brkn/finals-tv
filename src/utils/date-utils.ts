@@ -21,7 +21,7 @@ export function parseRawDates(
   ] = rest.split("-");
 
   const startDate = parse(
-    startDateString,
+    startDateString.trim(),
     "LLL d",
     new Date(year.trim()),
   );
@@ -33,7 +33,7 @@ export function parseRawDates(
     : "d";
 
   const endDate = parse(
-    endDateString,
+    endDateString.trim(),
     endDateFormat,
     startDate,
   );
