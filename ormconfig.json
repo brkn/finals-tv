@@ -1,0 +1,16 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "finals-admin",
+  "password": "parolamiz-sevgi",
+  "database": "finalstv",
+
+  "entities": ["src/entity/*.ts"],
+  "subscribers": ["src/subscriber/*.ts"],
+
+  "migrations": ["src/migration/*.ts"],
+  "cli": {
+    "migrationsDir": "src/migration"
+  }
+}
