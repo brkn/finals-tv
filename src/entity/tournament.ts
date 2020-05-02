@@ -3,40 +3,82 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
-  Unique,
+  OneToOne,
+  JoinColumn,
 } from "typeorm";
-import {
-  IsDate,
-  IsUrl,
-} from "class-validator";
+import {IsDate} from "class-validator";
+import {Match} from "./match";
+
+const TournamentTierEnum = [
+  "premier",
+  "major",
+  "minor",
+  "qualifier",
+  "monthly",
+] as const;
+
+export type TournamentTier = typeof TournamentTierEnum[number];
+
+const LocationEnum = [
+  "online",
+  "offline",
+] as const;
+
+export type Location = typeof LocationEnum[number];
 
 @Entity()
-// @Unique(["link"])
 export class Tournament extends BaseEntity {
-    @PrimaryGeneratedColumn("uuid")
-    id!: number;
+  @PrimaryGeneratedColumn("uuid")
+  id!: number;
 
-    @Column()
-    @IsDate()
-    date!: Date;
+  @Column({
+    length: 30,
+  })
+  name!: string;
 
-  /* @Column()
-    @IsUrl()
-    source!: string;
+  @Column()
+  @IsDate()
+  startDate!: Date;
 
-    @Column("varchar", {array: true})
-    authors!: string[]; */
+  @Column()
+  @IsDate()
+  endDate!: Date;
 
-  /*
-    Organizer:Ilusion eSports
-    Sponsor:LOOT.BET
-    Version:7.26a – 7.26b
-    Type:Online
-    Location:CIS CIS
-    Dates:Apr 24 - May 4, 2020
-    Teams:12
-    Format:Double-elimination
-    Prize Pool:$5,000 USD
-    Liquipedia Tier:Minor
-    */
+  @Column("integer")
+  prizePool!: number;
+
+  @Column({
+    type: "enum",
+    enum: LocationEnum,
+  })
+  location!: Location;
+
+  @Column({
+    type: "enum",
+    enum: TournamentTierEnum,
+  })
+  tier!: TournamentTier;
+
+  @OneToOne(
+    (_type) => {
+      return Match;
+    },
+    {cascade: true},
+  )
+  @JoinColumn()
+  match!: Match;
+
+  constructor(details: {
+    name: string;
+    tier: TournamentTier;
+    startDate: Date;
+    endDate: Date;
+  }) {
+    super();
+
+    this.name = details.name;
+    this.tier = details.tier;
+    this.startDate = details.startDate;
+    this.endDate = details.endDate;
+  }
 }
