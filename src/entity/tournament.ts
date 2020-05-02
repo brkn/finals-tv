@@ -5,6 +5,7 @@ import {
   BaseEntity,
   OneToOne,
   JoinColumn,
+  Unique,
 } from "typeorm";
 import {IsDate} from "class-validator";
 import {Match} from "./match";
@@ -15,6 +16,7 @@ const TournamentTierEnum = [
   "minor",
   "qualifier",
   "monthly",
+  "show m."
 ] as const;
 
 export type TournamentTier = typeof TournamentTierEnum[number];
@@ -27,13 +29,16 @@ const LocationEnum = [
 export type Location = typeof LocationEnum[number];
 
 @Entity()
+@Unique("Unique tournament", [
+  "name",
+  "startDate",
+  "endDate"
+])
 export class Tournament extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: number;
 
-  @Column({
-    length: 30,
-  })
+  @Column()
   name!: string;
 
   @Column()
@@ -68,17 +73,19 @@ export class Tournament extends BaseEntity {
   @JoinColumn()
   match!: Match;
 
-  constructor(details: {
+  construct(details: {
     name: string;
-    tier: TournamentTier;
     startDate: Date;
     endDate: Date;
+    prizePool: number;
+    location: Location;
+    tier: TournamentTier;
   }) {
-    super();
-
     this.name = details.name;
-    this.tier = details.tier;
     this.startDate = details.startDate;
     this.endDate = details.endDate;
+    this.prizePool = details.prizePool;
+    this.location = details.location;
+    this.tier = details.tier;
   }
 }

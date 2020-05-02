@@ -20,24 +20,19 @@ export class Match extends BaseEntity {
 
   @Column("date")
   @IsDate()
-  date!: Date;
+  date!: Date; /*
 
-  @Column()
+  @Column("array")
   @ArrayUnique()
   @ArrayMinSize(2)
   @ArrayMaxSize(2)
-  teams!: Team[];
+  teams!: Team[]; */
 
   @Column("integer")
   bestOf!: number;
 
-  constructor(
-    teams: Team[],
-    bestOf: number,
-  ) {
-    super();
-
-    this.teams = teams;
+  construct(teams: Team[], bestOf: number) {
+    /* this.teams = teams; */
     this.bestOf = bestOf;
   }
 }

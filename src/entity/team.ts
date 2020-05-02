@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 
 @Entity()
-@Unique(["name"])
+@Unique("Team name must be unique", ["name"])
 export class Team extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: number;
@@ -17,9 +17,7 @@ export class Team extends BaseEntity {
   })
   name!: string;
 
-  constructor(name: string) {
-    super();
-
+  construct(name: string) {
     this.name = name;
   }
 }
