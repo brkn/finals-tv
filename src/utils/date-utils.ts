@@ -7,6 +7,7 @@ export function parseRawDates(
   // EX: it can parse these:
   // datestring: Nov 23 - 29, 2020
   // datestring: Nov 23 - Dec 29, 2020
+  // datestring: Nov 23, 2020 // tournmanet starts and ends in the same day
   // EX: it CANNOT parse this:
   // datestring: Dec 23 2020 - Jan 1, 2021
 
@@ -26,17 +27,22 @@ export function parseRawDates(
     new Date(year.trim()),
   );
 
-  const endDateFormat = new RegExp(
-    ".*[a-zA-Z]+.*",
-  ).test(endDateString)
-    ? "LLL d"
-    : "d";
+  let endDate: Date;
+  if (endDateString) {
+    const endDateFormat = new RegExp(
+      ".*[a-zA-Z]+.*",
+    ).test(endDateString)
+      ? "LLL d"
+      : "d";
 
-  const endDate = parse(
-    endDateString.trim(),
-    endDateFormat,
-    startDate,
-  );
+    endDate = parse(
+      endDateString.trim(),
+      endDateFormat,
+      startDate,
+    );
+  } else {
+    endDate = startDate;
+  }
 
   return [
     startDate,
