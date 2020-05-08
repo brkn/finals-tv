@@ -18,7 +18,7 @@ const TournamentTierEnum = [
   "minor",
   "qualifier",
   "monthly",
-  "show m."
+  "show m.",
 ] as const;
 
 export type TournamentTier = typeof TournamentTierEnum[number];
@@ -34,7 +34,7 @@ export type Location = typeof LocationEnum[number];
 @Unique("Unique tournament", [
   "name",
   "startDate",
-  "endDate"
+  "endDate",
 ])
 export class Tournament extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
@@ -95,5 +95,30 @@ export class Tournament extends BaseEntity {
     this.location = details.location;
     this.tier = details.tier;
     this.link = details.link;
+  }
+
+  print() {
+    // TODO: add match object to print
+    const {
+      id,
+      name,
+      link,
+      prizePool,
+      tier,
+      location,
+      startDate,
+      endDate,
+    } = this;
+
+    return {
+      id,
+      name,
+      link,
+      prizePool,
+      tier,
+      location,
+      startDate: startDate.toDateString(),
+      endDate: endDate.toDateString(),
+    };
   }
 }

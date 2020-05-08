@@ -107,9 +107,10 @@ async function scrapeTheTournamentList() {
 async function printAllTournaments() {
   const tournaments = await Tournament.find();
   tournaments.forEach((t) => {
-    console.log(t.link);
+    console.log(t.print());
   });
-  console.log(tournaments.length);
+
+  /* console.log(tournaments.length); */
 }
 
 // TODO: make this function generic
@@ -146,7 +147,7 @@ createConnection()
     const tournamentRepo = connection.getRepository(
       Tournament,
     );
-
+    /* await printAllTournaments(); */
     await saveOrUpdateTournaments(
       tournamentRepo,
       tournaments,
