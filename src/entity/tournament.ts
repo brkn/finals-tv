@@ -7,7 +7,9 @@ import {
   JoinColumn,
   Unique,
 } from "typeorm";
-import {IsDate} from "class-validator";
+import {
+  IsDate, IsUrl
+} from "class-validator";
 import {Match} from "./match";
 
 const TournamentTierEnum = [
@@ -40,6 +42,10 @@ export class Tournament extends BaseEntity {
 
   @Column()
   name!: string;
+
+  @Column()
+  @IsUrl()
+  link!: string;
 
   @Column()
   @IsDate()
@@ -80,6 +86,7 @@ export class Tournament extends BaseEntity {
     prizePool: number;
     location: Location;
     tier: TournamentTier;
+    link: string;
   }) {
     this.name = details.name;
     this.startDate = details.startDate;
@@ -87,5 +94,6 @@ export class Tournament extends BaseEntity {
     this.prizePool = details.prizePool;
     this.location = details.location;
     this.tier = details.tier;
+    this.link = details.link;
   }
 }
