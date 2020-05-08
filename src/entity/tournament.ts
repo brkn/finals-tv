@@ -74,10 +74,13 @@ export class Tournament extends BaseEntity {
     (_type) => {
       return Match;
     },
-    {cascade: true},
+    (match) => {
+      return match.tournament;
+    },
+    {cascade: true, nullable: true},
   )
   @JoinColumn()
-  match!: Match;
+  match!: Match | null;
 
   construct(details: {
     name: string;
@@ -95,6 +98,7 @@ export class Tournament extends BaseEntity {
     this.location = details.location;
     this.tier = details.tier;
     this.link = details.link;
+    this.match = null;
   }
 
   print() {

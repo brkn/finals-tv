@@ -3,6 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
+  OneToOne,
 } from "typeorm";
 import {
   IsDate,
@@ -12,6 +13,7 @@ import {
 } from "class-validator";
 
 import {Team} from "./team";
+import {Tournament} from "./tournament";
 
 @Entity()
 export class Match extends BaseEntity {
@@ -31,8 +33,23 @@ export class Match extends BaseEntity {
   @Column("integer")
   bestOf!: number;
 
-  construct(teams: Team[], bestOf: number) {
-    /* this.teams = teams; */
-    this.bestOf = bestOf;
+  @OneToOne(
+    (_type) => {
+      return Tournament;
+    },
+    (tournament) => {
+      return tournament.match;
+    },
+  )
+  tournament!: Tournament;
+
+  construct(details: {
+    teams: Team[];
+    bestOf: number;
+    tournament: Tournament;
+  }) {
+    /* this.teams = details.teams; */
+    this.bestOf = details.bestOf;
+    this.tournament = details.tournament;
   }
 }
