@@ -49,3 +49,35 @@ export function parseRawDates(
     endDate
   ];
 }
+
+export function parseRawMatchDate(
+  rawMatchDateElement: HTMLSpanElement,
+) {
+  /* eslint-disable max-len */
+  // Ex inputs:
+  // - "May 10, 2020 - 17:00 <abbr data-tz="+8:00" title="China Standard Time (UTC+8)">CST</abbr>"
+  // - "May 11, 2020 - 14:00 <abbr data-tz="+8:00" title="China Standard Time (UTC+8)">CST</abbr>"
+  // - "May 16, 2020 - 12:00 <abbr data-tz="+1:00" title="British Summer Time (UTC+1)">BST</abbr>"
+  // - "May 4, 2020 - 19:00 <abbr data-tz="+2:00" title="Central European Summer Time (UTC+2)">CEST</abbr>"
+  // - "April 30, 2020 - 18:00 <abbr data-tz="-4:00" title="Eastern Daylight Time (UTC-4)">EDT</abbr>"
+  const rawDateString = rawMatchDateElement.firstChild?.textContent?.trim();
+  const timeZone = rawMatchDateElement
+    .getElementsByTagName("abbr")[0]
+    .getAttribute("data-tz");
+
+  if (!rawDateString || !timeZone) {
+    throw new Error(
+      "rawMatchDateElement is too unusal to parse, timezone or the date string might be missing",
+    );
+  }
+  const tz = timeZone
+    .replace("-", "-0")
+    .replace("+", "+0");
+  const date = parse(
+    `${rawDateString} ${tz}`,
+    "LLLL d, uuuu - HH:mm xxx",
+    new Date(),
+  );
+
+  return date;
+}
