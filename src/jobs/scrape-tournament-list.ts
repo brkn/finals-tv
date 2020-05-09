@@ -134,7 +134,10 @@ async function saveOrUpdateTournaments(
     } else {
       await TournamentRepository.update(
         oldTournament.id,
-        tournament,
+        {
+          ...tournament,
+          match: oldTournament.match,
+        },
       );
     }
   });
@@ -147,11 +150,13 @@ createConnection()
     const tournamentRepo = connection.getRepository(
       Tournament,
     );
-    /* await printAllTournaments(); */
+
     await saveOrUpdateTournaments(
       tournamentRepo,
       tournaments,
     );
+
+    await printAllTournaments();
   })
   .catch((error) => {
     return console.log(error);
