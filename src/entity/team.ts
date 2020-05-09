@@ -10,7 +10,7 @@ import {
 @Unique("Team name must be unique", ["name"])
 export class Team extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
-  id!: number;
+  id!: string;
 
   @Column({
     length: 50,

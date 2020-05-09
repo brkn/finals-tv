@@ -38,7 +38,7 @@ export type Location = typeof LocationEnum[number];
 ])
 export class Tournament extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
-  id!: number;
+  id!: string;
 
   @Column()
   name!: string;
@@ -77,7 +77,13 @@ export class Tournament extends BaseEntity {
     (match) => {
       return match.tournament;
     },
-    {cascade: true, nullable: true},
+    {
+      cascade: [
+        "insert",
+        "update"
+      ],
+      nullable: true,
+    },
   )
   @JoinColumn()
   match!: Match | null;
@@ -102,7 +108,6 @@ export class Tournament extends BaseEntity {
   }
 
   print() {
-    // TODO: add match object to print
     const {
       id,
       name,
@@ -112,6 +117,7 @@ export class Tournament extends BaseEntity {
       location,
       startDate,
       endDate,
+      match,
     } = this;
 
     return {
@@ -123,6 +129,7 @@ export class Tournament extends BaseEntity {
       location,
       startDate: startDate.toDateString(),
       endDate: endDate.toDateString(),
+      match: match?.print() ?? null,
     };
   }
 }

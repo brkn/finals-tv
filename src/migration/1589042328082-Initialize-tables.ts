@@ -3,9 +3,9 @@ import {
   QueryRunner,
 } from "typeorm";
 
-export class InitializeTables1588981732376
+export class InitializeTables1589042328082
 implements MigrationInterface {
-  name = "InitializeTables1588981732376";
+  name = "InitializeTables1589042328082";
 
   public async up(
     queryRunner: QueryRunner,
@@ -27,7 +27,7 @@ implements MigrationInterface {
       undefined,
     );
     await queryRunner.query(
-      "CREATE TABLE \"match\" (\"id\" uuid NOT NULL DEFAULT uuid_generate_v4(), \"date\" date NOT NULL, \"bestOf\" integer NOT NULL, CONSTRAINT \"PK_92b6c3a6631dd5b24a67c69f69d\" PRIMARY KEY (\"id\"))",
+      "CREATE TABLE \"match\" (\"id\" uuid NOT NULL DEFAULT uuid_generate_v4(), \"date\" date, \"teams\" character varying array NOT NULL, \"bestOf\" integer NOT NULL, \"tournamentId\" character varying, CONSTRAINT \"Tournament has to be unique\" UNIQUE (\"tournamentId\"), CONSTRAINT \"PK_92b6c3a6631dd5b24a67c69f69d\" PRIMARY KEY (\"id\"))",
       undefined,
     );
     await queryRunner.query(
