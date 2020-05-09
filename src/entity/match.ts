@@ -10,6 +10,7 @@ import {
   ArrayUnique,
   ArrayMaxSize,
   ArrayMinSize,
+  IsOptional,
 } from "class-validator";
 
 import {Team} from "./team";
@@ -20,15 +21,14 @@ export class Match extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: number;
 
-  @Column("date")
+  @Column("date", {nullable: true})
+  @IsOptional()
   @IsDate()
-  date!: Date; /*
+  date!: Date | null;
 
-  @Column("array")
+  @Column("varchar", {array: true})
   @ArrayUnique()
-  @ArrayMinSize(2)
-  @ArrayMaxSize(2)
-  teams!: Team[]; */
+  teams!: [string, string]; // Teams should be just string for now
 
   @Column("integer")
   bestOf!: number;
@@ -44,11 +44,13 @@ export class Match extends BaseEntity {
   tournament!: Tournament;
 
   construct(details: {
-    teams: Team[];
+    teams: [string, string];
+    date: Date | null;
     bestOf: number;
     tournament: Tournament;
   }) {
-    /* this.teams = details.teams; */
+    this.teams = details.teams;
+    this.date = details.date;
     this.bestOf = details.bestOf;
     this.tournament = details.tournament;
   }
