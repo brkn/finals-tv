@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 import axios from "axios";
 import {JSDOM} from "jsdom";
 import {
@@ -110,7 +112,7 @@ async function printAllTournaments() {
     console.log(t.print());
   });
 
-  /* console.log(tournaments.length); */
+  console.log(tournaments.length);
 }
 
 // TODO: make this function generic
@@ -119,7 +121,7 @@ async function saveOrUpdateTournaments(
   TournamentRepository: Repository<Tournament>,
   tournaments: Tournament[],
 ) {
-  tournaments.forEach(async (tournament) => {
+  for (const tournament of tournaments) {
     const oldTournament = await TournamentRepository.findOne(
       {
         where: {
@@ -132,15 +134,18 @@ async function saveOrUpdateTournaments(
     if (!oldTournament) {
       await tournament.save();
     } else {
-      await TournamentRepository.update(
-        oldTournament.id,
+      await TournamentRepository.merge(
+        oldTournament,
         {
           ...tournament,
           match: oldTournament.match,
         },
       );
+      await TournamentRepository.save(
+        oldTournament,
+      );
     }
-  });
+  }
 }
 
 createConnection()
