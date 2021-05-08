@@ -67,6 +67,6 @@
     "morgan": "1.10.0",
     "pg": "8.0.3",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.22"
+    "typeorm": "^0.2.25"
   }
 }
